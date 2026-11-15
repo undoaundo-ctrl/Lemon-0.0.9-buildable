@@ -1,0 +1,25 @@
+name: Build jar
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 8   # use 17 or 21 for newer Minecraft versions
+
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jar
+          path: build/libs/*.jar
