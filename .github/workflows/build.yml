@@ -24,3 +24,9 @@ jobs:
         with:
           name: jar
           path: build/libs/*.jar
+      
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew clean setupCiWorkspace
+          ./gradlew build -x getAssets -x getAssetIndex
