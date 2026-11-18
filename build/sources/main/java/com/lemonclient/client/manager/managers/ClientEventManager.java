@@ -93,7 +93,8 @@ public enum ClientEventManager implements Manager {
          if (packet.getAction() == Action.ADD_PLAYER) {
             for (Object playerData : (List) packet.getEntries()) {
                GameProfile profile = getEntryProfile(playerData);
-               if (profile.getId() != this.getMinecraft().session.getProfile().getId()) {
+               if (profile != null && profile.getId() != null
+                  && !profile.getId().equals(this.getMinecraft().session.getProfile().getId())) {
                   String uuid = profile.getId().toString();
                   new Thread(() -> {
                      String name = NameUtil.resolveName(uuid);
@@ -109,7 +110,8 @@ public enum ClientEventManager implements Manager {
          if (packet.getAction() == Action.REMOVE_PLAYER) {
             for (Object playerDatax : (List) packet.getEntries()) {
                GameProfile profile = getEntryProfile(playerDatax);
-               if (profile.getId() != this.getMinecraft().session.getProfile().getId()) {
+               if (profile != null && profile.getId() != null
+                  && !profile.getId().equals(this.getMinecraft().session.getProfile().getId())) {
                   String uuid = profile.getId().toString();
                   new Thread(() -> {
                      String name = NameUtil.resolveName(uuid);
@@ -549,10 +551,13 @@ public enum ClientEventManager implements Manager {
    }
 
     private static GameProfile getEntryProfile(Object entry) {
-       try {
-          return (GameProfile) entry.getClass().getMethod("getProfile").invoke(entry);
-       } catch (ReflectiveOperationException e) {
-          throw new RuntimeException(e);
-       }
+        try {
+           // Runtime method/field names differ from MCP (dev) names, so use
+           // ObfuscationReflectionHelper which maps both searge and mcp names.
+           return (GameProfile) net.minecraftforge.fml.common.ObfuscationReflectionHelper
+              .getPrivateValue((Class<Object>) (Class<?>) entry.getClass(), entry, "profile", "field_179964_d");
+        } catch (Throwable e) {
+           throw new RuntimeException(e);
+        }
     }
 }
