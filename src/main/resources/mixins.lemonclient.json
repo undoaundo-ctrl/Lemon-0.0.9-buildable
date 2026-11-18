@@ -21,6 +21,7 @@
     "MixinLayerBipedArmor",
     "MixinMinecraft",
     "MixinMovementInputFromOptions",
+    "MixinNetworkDispatcher",
     "MixinNetworkManager",
     "MixinPlayerControllerMP",
     "MixinPlayerOverlay",
