@@ -150,6 +150,7 @@ public class BlockHead extends Module {
 
                                     BlockPos obsi = sidex.up().add(add);
                                     if (!this.intersectsWithEntity(obsi) && BlockUtil.canReplace(obsi)) {
+                                       final BlockPos finalPlacePos = placePos;
                                        InventoryUtil.run(
                                           this.ob,
                                           this.packetSwitch.getValue(),
@@ -172,10 +173,11 @@ public class BlockHead extends Module {
                      return;
                   }
 
+                  final BlockPos finalPlacePos = placePos;
                   InventoryUtil.run(
                      this.ob,
                      this.packetSwitch.getValue(),
-                     () -> BurrowUtil.placeBlock(placePos, EnumHand.MAIN_HAND, this.rotate.getValue(), this.packet.getValue(), false, this.swing.getValue())
+                     () -> BurrowUtil.placeBlock(finalPlacePos, EnumHand.MAIN_HAND, this.rotate.getValue(), this.packet.getValue(), false, this.swing.getValue())
                   );
                   this.placed++;
                }

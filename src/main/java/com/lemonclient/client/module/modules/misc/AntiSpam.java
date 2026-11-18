@@ -87,7 +87,8 @@ public class AntiSpam extends Module {
                               13,
                               false
                            );
-                           MultiThreading.runAsync(() -> this.startIgnore(username));
+                           final String ignoreUser = username;
+                           MultiThreading.runAsync(() -> this.startIgnore(ignoreUser));
                            this.violate.remove(username);
                         }
                      }

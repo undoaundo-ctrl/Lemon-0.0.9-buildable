@@ -24,8 +24,10 @@ import com.lemonclient.client.module.modules.misc.ShulkerBypass;
 import com.lemonclient.client.module.modules.qwq.AntiUnicdoe;
 import com.lemonclient.mixin.mixins.accessor.AccessorCPacketCustomPayload;
 import com.mojang.realmsclient.gui.ChatFormatting;
+import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
@@ -42,7 +44,6 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.network.play.server.SPacketPlayerListItem.Action;
-import net.minecraft.network.play.server.SPacketPlayerListItem.AddPlayerData;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -90,10 +91,12 @@ public enum ClientEventManager implements Manager {
          
          // 1. Xử lý khi người chơi tham gia
          if (packet.getAction() == Action.ADD_PLAYER) {
-            for (AddPlayerData playerData : packet.getEntries()) {
-               if (playerData.getProfile().getId() != this.getMinecraft().session.getProfile().getId()) {
+            for (Object playerData : (List) packet.getEntries()) {
+               GameProfile profile = getEntryProfile(playerData);
+               if (profile.getId() != this.getMinecraft().session.getProfile().getId()) {
+                  String uuid = profile.getId().toString();
                   new Thread(() -> {
-                     String name = NameUtil.resolveName(playerData.getProfile().getId().toString());
+                     String name = NameUtil.resolveName(uuid);
                      if (name != null && this.getPlayer() != null && this.getPlayer().ticksExisted >= 1000) {
                         LemonClient.EVENT_BUS.post(new PlayerJoinEvent(name));
                      }
@@ -104,11 +107,12 @@ public enum ClientEventManager implements Manager {
 
          // 2. Xử lý khi người chơi rời đi
          if (packet.getAction() == Action.REMOVE_PLAYER) {
-            for (AddPlayerData playerDatax : packet.getEntries()) {
-               if (playerDatax.getProfile().getId() != this.getMinecraft().session.getProfile().getId()) {
+            for (Object playerDatax : (List) packet.getEntries()) {
+               GameProfile profile = getEntryProfile(playerDatax);
+               if (profile.getId() != this.getMinecraft().session.getProfile().getId()) {
+                  String uuid = profile.getId().toString();
                   new Thread(() -> {
-                     // Sửa lỗi symbol: Sử dụng đúng tên biến playerDatax từ vòng lặp for
-                     String name = NameUtil.resolveName(playerDatax.getProfile().getId().toString());
+                     String name = NameUtil.resolveName(uuid);
                      if (name != null && this.getPlayer() != null && this.getPlayer().ticksExisted >= 1000) {
                         LemonClient.EVENT_BUS.post(new PlayerLeaveEvent(name));
                      }
@@ -543,4 +547,12 @@ public enum ClientEventManager implements Manager {
          }
       }
    }
+
+    private static GameProfile getEntryProfile(Object entry) {
+       try {
+          return (GameProfile) entry.getClass().getMethod("getProfile").invoke(entry);
+       } catch (ReflectiveOperationException e) {
+          throw new RuntimeException(e);
+       }
+    }
 }
