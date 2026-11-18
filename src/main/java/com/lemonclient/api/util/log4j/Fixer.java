@@ -19,6 +19,15 @@ public class Fixer {
       logger.info("Exploit Test: ${jndi:ldap://" + someRandomUri + "}");
    }
 
+   private static boolean isJndiEnabled() {
+      String property = System.getProperty("log4j2.enableJndi");
+      if (property == null) {
+         property = System.getProperty("log4j2.enableJndiLookup");
+      }
+
+      return property == null || Boolean.parseBoolean(property);
+   }
+
    private static String randomUri() {
       char[] buf = new char[81];
       Random rng = new SecureRandom();
@@ -34,12 +43,19 @@ public class Fixer {
    public static void disableJndiManager() {
       try {
          disableJndiManager0();
+      } catch (ExceptionInInitializerError | IllegalStateException var1) {
+         // JNDI is already disabled in this environment (Forge / log4j2.enableJndi=false),
+         // so there is no JndiManager instance left to neutralize.
       } catch (Exception var1) {
          throw new ExceptionInInitializerError(var1);
       }
    }
 
    private static void disableJndiManager0() {
+      if (!isJndiEnabled()) {
+         return;
+      }
+
       JndiManager.getDefaultManager();
       Class<AbstractManager> mapHolder = AbstractManager.class;
       Arrays.stream(mapHolder.getDeclaredFields())
