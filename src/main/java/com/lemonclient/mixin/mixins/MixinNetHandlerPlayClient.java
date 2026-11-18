@@ -56,7 +56,7 @@ public class MixinNetHandlerPlayClient {
       method = "handleJoinGame",
       at = @At(
          value = "INVOKE",
-         target = "Lnet/minecraftforge/fml/common/network/handshake/NetworkDispatcher.getOverrideDimension(Lnet/minecraft/network/play/server/SPacketJoinGame;)I",
+         target = "Lnet/minecraftforge/fml/common/network/handshake/NetworkDispatcher;getOverrideDimension(Lnet/minecraft/network/play/server/SPacketJoinGame;)I",
          remap = false
       )
    )
