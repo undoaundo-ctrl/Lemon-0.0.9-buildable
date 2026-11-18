@@ -1,6 +1,6 @@
 # lemon 0.0.9 buildable
-- about : This source code is for anyone who wants to customize Lemon 0.0.9.
-- Code: HWID-based verification and its webhook code have been removed. The code may still contain uncorrected errors.
+- about : This source code is for anyone who wants to install Lemon 0.0.9.
+- Code: well i've made it clean! just use the github workflow and you get lemon release 0.0.9 !
 - well, still wanna make this private?
 
 # Thanks to :
