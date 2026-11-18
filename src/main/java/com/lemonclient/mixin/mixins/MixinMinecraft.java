@@ -4,7 +4,6 @@ import club.minnced.discord.rpc.DiscordRPC;
 import com.lemonclient.api.config.SaveConfig;
 import com.lemonclient.api.util.player.Locks;
 import com.lemonclient.api.util.player.social.SocialManager;
-import com.lemonclient.client.LemonClient;
 import com.lemonclient.client.module.ModuleManager;
 import com.lemonclient.client.module.modules.misc.AntiSpam;
 import com.lemonclient.client.module.modules.misc.MultiTask;
@@ -194,7 +193,6 @@ public class MixinMinecraft {
       SaveConfig.init();
       this.lemonclient$discordRPC.Discord_Shutdown();
       this.lemonclient$discordRPC.Discord_ClearPresence();
-      LemonClient.shutdown();
    }
 
    @Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
@@ -203,7 +201,6 @@ public class MixinMinecraft {
       SaveConfig.init();
       this.lemonclient$discordRPC.Discord_Shutdown();
       this.lemonclient$discordRPC.Discord_ClearPresence();
-      LemonClient.shutdown();
    }
 
    @Inject(method = "crashed", at = @At("HEAD"))
@@ -212,7 +209,6 @@ public class MixinMinecraft {
       SaveConfig.init();
       this.lemonclient$discordRPC.Discord_Shutdown();
       this.lemonclient$discordRPC.Discord_ClearPresence();
-      LemonClient.shutdown();
    }
 
    @Inject(method = "shutdown", at = @At("HEAD"))
@@ -221,7 +217,6 @@ public class MixinMinecraft {
       SaveConfig.init();
       this.lemonclient$discordRPC.Discord_Shutdown();
       this.lemonclient$discordRPC.Discord_ClearPresence();
-      LemonClient.shutdown();
    }
 
    @Unique

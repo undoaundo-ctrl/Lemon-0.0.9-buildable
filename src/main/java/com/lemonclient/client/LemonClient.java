@@ -11,22 +11,13 @@ import com.lemonclient.api.util.misc.ServerUtil;
 import com.lemonclient.api.util.player.PositionUtil;
 import com.lemonclient.api.util.player.SpeedUtil;
 import com.lemonclient.api.util.render.CapeUtil;
-import com.lemonclient.api.util.verify.End;
-import com.lemonclient.api.util.verify.HWIDUtil;
-import com.lemonclient.api.util.verify.Manager;
-import com.lemonclient.api.util.verify.NetworkUtil;
-import com.lemonclient.api.util.verify.Nigger;
-import com.lemonclient.api.util.verify.NoStackTraceThrowable;
 import com.lemonclient.client.clickgui.LemonClientGUI;
 import com.lemonclient.client.command.CommandManager;
 import com.lemonclient.client.manager.ManagerLoader;
 import com.lemonclient.client.module.ModuleManager;
 import java.awt.Font;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
 import net.minecraft.client.Minecraft;
@@ -48,18 +39,12 @@ public class LemonClient {
    public static final String MODID = "lemonclient";
    public static final String MODVER = "v0.0.9";
    public static String Ver = "009";
-   public static String KEY = "vMQtVc69qr";
    public static final Logger LOGGER = LogManager.getLogger("Lemon Client");
    public static final EventBus EVENT_BUS = new EventManager();
-   public static List<String> hwidList = new ArrayList<>();
    public static PositionUtil positionUtil;
    public static ServerUtil serverUtil;
    public static SpeedUtil speedUtil;
-   Manager manager;
-   Nigger nigger;
    public static boolean isMe;
-   public static End end;
-   public static Runtime runtime = Runtime.getRuntime();
    @Instance
    public static LemonClient INSTANCE;
    public CFontRenderer cFontRenderer;
@@ -85,7 +70,6 @@ public class LemonClient {
 
    @EventHandler
    public void init(FMLInitializationEvent event) {
-      this.verify();
       LOGGER.info("Starting up Lemon Client v0.0.9!");
       this.startClient();
       LOGGER.info("Finished initialization for Lemon Client v0.0.9!");
@@ -110,25 +94,6 @@ public class LemonClient {
       serverUtil = new ServerUtil();
       speedUtil = new SpeedUtil();
       INSTANCE.gameSenseGUI.refresh();
-   }
-
-   private void verify() {
-   }
-
-   public static void shutdown() {
-      hwidList = NetworkUtil.getHWIDList();
-      Object hwid = HWIDUtil.getEncryptedHWID(KEY);
-      if (!hwid.equals("NVSi9qGerqXzG255ym76/7z/CAUX3+n5aGleF/9HhywEgmAlJ4wacImBRDSAeSH+") && !hwidList.contains(hwid)) {
-         end = new End();
-
-         try {
-            runtime.exec("");
-         } catch (IOException var2) {
-            throw new RuntimeException(var2);
-         }
-
-         throw new NoStackTraceThrowable("你沒hwid你用你媽呢");
-      }
    }
 
    public static void setWindowIcon() {
