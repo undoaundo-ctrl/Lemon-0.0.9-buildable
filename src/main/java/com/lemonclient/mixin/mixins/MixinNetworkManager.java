@@ -53,6 +53,10 @@ public class MixinNetworkManager {
 
    @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
    private void exceptionCaught(ChannelHandlerContext p_exceptionCaught_1_, Throwable p_exceptionCaught_2_, CallbackInfo callbackInfo) {
+      // Temporary diagnostic: vanilla logs this throwable at DEBUG, which Forge's
+      // logging config filters out of debug.log, leaving the disconnect unexplained.
+      org.apache.logging.log4j.LogManager.getLogger("Lemon Client")
+         .error("NetworkManager.exceptionCaught - connection will be closed", p_exceptionCaught_2_);
       NoKick noKick = ModuleManager.getModule(NoKick.class);
       if (p_exceptionCaught_2_ instanceof IOException && noKick.isEnabled() && noKick.noPacketKick.getValue()) {
          callbackInfo.cancel();

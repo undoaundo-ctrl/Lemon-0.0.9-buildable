@@ -1,0 +1,43 @@
+FD: com/lemonclient/mixin/mixins/MixinC00Handshake/protocolVersion com/lemonclient/mixin/mixins/MixinC00Handshake/a
+FD: com/lemonclient/mixin/mixins/MixinC00Handshake/ip com/lemonclient/mixin/mixins/MixinC00Handshake/b
+FD: com/lemonclient/mixin/mixins/MixinC00Handshake/port com/lemonclient/mixin/mixins/MixinC00Handshake/c
+FD: com/lemonclient/mixin/mixins/MixinC00Handshake/requestedState com/lemonclient/mixin/mixins/MixinC00Handshake/d
+FD: com/lemonclient/mixin/mixins/MixinEntity/posX com/lemonclient/mixin/mixins/MixinEntity/p
+FD: com/lemonclient/mixin/mixins/MixinEntity/posY com/lemonclient/mixin/mixins/MixinEntity/q
+FD: com/lemonclient/mixin/mixins/MixinEntity/posZ com/lemonclient/mixin/mixins/MixinEntity/r
+FD: com/lemonclient/mixin/mixins/MixinEntity/motionX com/lemonclient/mixin/mixins/MixinEntity/s
+FD: com/lemonclient/mixin/mixins/MixinEntity/motionY com/lemonclient/mixin/mixins/MixinEntity/t
+FD: com/lemonclient/mixin/mixins/MixinEntity/motionZ com/lemonclient/mixin/mixins/MixinEntity/u
+FD: com/lemonclient/mixin/mixins/MixinEntity/rotationYaw com/lemonclient/mixin/mixins/MixinEntity/v
+FD: com/lemonclient/mixin/mixins/MixinEntity/rotationPitch com/lemonclient/mixin/mixins/MixinEntity/w
+FD: com/lemonclient/mixin/mixins/MixinEntity/onGround com/lemonclient/mixin/mixins/MixinEntity/z
+FD: com/lemonclient/mixin/mixins/MixinEntity/world com/lemonclient/mixin/mixins/MixinEntity/l
+FD: com/lemonclient/mixin/mixins/MixinEntity/stepHeight com/lemonclient/mixin/mixins/MixinEntity/P
+FD: com/lemonclient/mixin/mixins/MixinEntity/isDead com/lemonclient/mixin/mixins/MixinEntity/F
+FD: com/lemonclient/mixin/mixins/MixinEntity/width com/lemonclient/mixin/mixins/MixinEntity/G
+FD: com/lemonclient/mixin/mixins/MixinEntity/height com/lemonclient/mixin/mixins/MixinEntity/H
+FD: com/lemonclient/mixin/mixins/MixinMinecraft/player com/lemonclient/mixin/mixins/MixinMinecraft/h
+FD: com/lemonclient/mixin/mixins/MixinMinecraft/playerController com/lemonclient/mixin/mixins/MixinMinecraft/c
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/connection com/lemonclient/mixin/mixins/MixinEntityPlayerSP/d
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/mc com/lemonclient/mixin/mixins/MixinEntityPlayerSP/f
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/prevOnGround com/lemonclient/mixin/mixins/MixinEntityPlayerSP/cj
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/lastReportedYaw com/lemonclient/mixin/mixins/MixinEntityPlayerSP/ch
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/lastReportedPitch com/lemonclient/mixin/mixins/MixinEntityPlayerSP/ci
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/positionUpdateTicks com/lemonclient/mixin/mixins/MixinEntityPlayerSP/cm
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/lastReportedPosX com/lemonclient/mixin/mixins/MixinEntityPlayerSP/ce
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/lastReportedPosY com/lemonclient/mixin/mixins/MixinEntityPlayerSP/cf
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/lastReportedPosZ com/lemonclient/mixin/mixins/MixinEntityPlayerSP/cg
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/autoJumpEnabled com/lemonclient/mixin/mixins/MixinEntityPlayerSP/cu
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/serverSprintState com/lemonclient/mixin/mixins/MixinEntityPlayerSP/cl
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/serverSneakState com/lemonclient/mixin/mixins/MixinEntityPlayerSP/ck
+FD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/movementInput com/lemonclient/mixin/mixins/MixinEntityPlayerSP/e
+FD: com/lemonclient/mixin/mixins/MixinRenderLivingBase/mainModel com/lemonclient/mixin/mixins/MixinRenderLivingBase/f
+FD: com/lemonclient/mixin/mixins/MixinItemRenderer/mc com/lemonclient/mixin/mixins/MixinItemRenderer/c
+MD: com/lemonclient/mixin/mixins/MixinAbstractClientPlayer/getPlayerInfo ()Lnet/minecraft/client/network/NetworkPlayerInfo; com/lemonclient/mixin/mixins/MixinAbstractClientPlayer/b ()Lbsc;
+MD: com/lemonclient/mixin/mixins/MixinEntity/getEntityBoundingBox ()Lnet/minecraft/util/math/AxisAlignedBB; com/lemonclient/mixin/mixins/MixinEntity/bw ()Lbhb;
+MD: com/lemonclient/mixin/mixins/MixinEntity/isSneaking ()Z com/lemonclient/mixin/mixins/MixinEntity/aU ()Z
+MD: com/lemonclient/mixin/mixins/MixinEntity/equals (Ljava/lang/Object;)Z com/lemonclient/mixin/mixins/MixinEntity/equals (Ljava/lang/Object;)Z
+MD: com/lemonclient/mixin/mixins/MixinEntityPlayer/getName ()Ljava/lang/String; com/lemonclient/mixin/mixins/MixinEntityPlayer/h_ ()Ljava/lang/String;
+MD: com/lemonclient/mixin/mixins/MixinEntityRenderer/disableLightmap ()V com/lemonclient/mixin/mixins/MixinEntityRenderer/h ()V
+MD: com/lemonclient/mixin/mixins/MixinEntityPlayerSP/isCurrentViewEntity ()Z com/lemonclient/mixin/mixins/MixinEntityPlayerSP/K ()Z
+MD: com/lemonclient/mixin/mixins/MixinPlayerControllerMP/syncCurrentPlayItem ()V com/lemonclient/mixin/mixins/MixinPlayerControllerMP/n ()V
