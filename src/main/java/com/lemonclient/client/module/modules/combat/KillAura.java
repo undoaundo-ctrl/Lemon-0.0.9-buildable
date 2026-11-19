@@ -13,11 +13,14 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 
 @Module.Declaration(name = "KillAura", category = Category.Combat)
 public class KillAura extends Module {
-   DoubleSetting range = this.registerDouble("Range", 4.0, 1.0, 6.0);
+   DoubleSetting range = this.registerDouble("Range", 4.0, 1.0, 10.0);
    BooleanSetting rotate = this.registerBoolean("Rotate", true);
    BooleanSetting swing = this.registerBoolean("Swing", true);
    BooleanSetting players = this.registerBoolean("Players", true);
@@ -25,12 +28,17 @@ public class KillAura extends Module {
    BooleanSetting passive = this.registerBoolean("Passive Animals", true);
    BooleanSetting other = this.registerBoolean("Other Entities", false);
    BooleanSetting ignoreFriends = this.registerBoolean("Ignore Friends", true);
+   BooleanSetting ignoreCooldown = this.registerBoolean("Ignore Cooldown", false);
+   BooleanSetting reachBypass = this.registerBoolean("Reach Bypass", true);
+   DoubleSetting reach = this.registerDouble("Reach", 4.5, 3.0, 10.0, () -> this.reachBypass.getValue());
 
    private Entity target = null;
+   private int attackTicks = 0;
 
    @Override
    protected void onEnable() {
       SpoofRotationUtil.ROTATION_UTIL.onEnable();
+      this.attackTicks = 0;
    }
 
    @Override
@@ -79,12 +87,45 @@ public class KillAura extends Module {
          );
       }
 
-      // Attack on cooldown
-      if (mc.player.getCooledAttackStrength(0.0f) >= 1.0f) {
-         mc.playerController.attackEntity(mc.player, this.target);
-         if (this.swing.getValue()) {
-            mc.player.swingArm(EnumHand.MAIN_HAND);
+      // Attack timing: vanilla cooldown or every tick
+      this.attackTicks++;
+      boolean ready = this.ignoreCooldown.getValue()
+         ? this.attackTicks >= 1
+         : mc.player.getCooledAttackStrength(0.0f) >= 1.0f;
+      if (ready) {
+         this.attack(this.target);
+         this.attackTicks = 0;
+      }
+   }
+
+   private void attack(Entity victim) {
+      double dist = mc.player.getDistance(victim);
+      boolean bypass = this.reachBypass.getValue() && dist > 3.0 && dist <= this.reach.getValue();
+
+      if (bypass) {
+         // Server only accepts attacks within 3 blocks (9.0 sq). Move the
+         // reported position close enough, attack, then restore it.
+         double dx = victim.posX - mc.player.posX;
+         double dy = victim.posY - mc.player.posY;
+         double dz = victim.posZ - mc.player.posZ;
+         double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+         if (len > 0.0001) {
+            double factor = (len - 2.5) / len;
+            double fx = mc.player.posX + dx * factor;
+            double fy = mc.player.posY + dy * factor;
+            double fz = mc.player.posZ + dz * factor;
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(fx, fy, fz, mc.player.onGround));
+            mc.player.connection.sendPacket(new CPacketUseEntity(victim));
+            mc.player.connection.sendPacket(
+               new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.onGround)
+            );
          }
+      } else if (dist <= 3.0 || !this.reachBypass.getValue()) {
+         mc.player.connection.sendPacket(new CPacketUseEntity(victim));
+      }
+
+      if (this.swing.getValue()) {
+         mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
       }
    }
 
