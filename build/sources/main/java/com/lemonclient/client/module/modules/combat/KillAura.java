@@ -8,6 +8,8 @@ import com.lemonclient.client.module.Category;
 import com.lemonclient.client.module.Module;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,6 +91,8 @@ public class KillAura extends Module {
    private boolean isTarget(EntityLivingBase entity) {
       if (entity instanceof EntityPlayer) return this.players.getValue();
       if (entity instanceof EntityMob) return this.hostile.getValue();
+      // Bosses (Wither / Ender Dragon) are EntityLiving, not EntityMob
+      if (entity instanceof EntityWither || entity instanceof EntityDragon) return this.hostile.getValue();
       if (entity instanceof EntityAnimal) return this.passive.getValue();
       return this.other.getValue();
    }
