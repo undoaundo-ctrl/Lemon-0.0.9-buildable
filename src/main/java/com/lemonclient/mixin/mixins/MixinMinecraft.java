@@ -5,6 +5,7 @@ import com.lemonclient.api.config.SaveConfig;
 import com.lemonclient.api.util.player.Locks;
 import com.lemonclient.api.util.player.social.SocialManager;
 import com.lemonclient.client.module.ModuleManager;
+import com.lemonclient.client.module.modules.exploits.AirPlace;
 import com.lemonclient.client.module.modules.misc.AntiSpam;
 import com.lemonclient.client.module.modules.misc.MultiTask;
 import com.lemonclient.mixin.mixins.accessor.AccessorEntityPlayerSP;
@@ -43,6 +44,8 @@ public class MixinMinecraft {
    private boolean lemonclient$handActive = false;
    @Unique
    private boolean lemonclient$isHittingBlock = false;
+   @Unique
+   private boolean lemonclient$airPlaced = false;
 
    @Redirect(
       method = "rightClickMouse",
@@ -157,8 +160,16 @@ public class MixinMinecraft {
       return var4;
    }
 
-   @Inject(method = "rightClickMouse", at = @At("HEAD"))
+   @Inject(method = "rightClickMouse", at = @At("HEAD"), cancellable = true)
    public void rightClickMousePre(CallbackInfo ci) {
+      if (ModuleManager.isModuleEnabled(AirPlace.class)
+         && ModuleManager.getModule(AirPlace.class).doAirPlace()) {
+         this.lemonclient$airPlaced = true;
+         ci.cancel();
+         return;
+      }
+      this.lemonclient$airPlaced = false;
+
       if (ModuleManager.isModuleEnabled(MultiTask.class)) {
          this.lemonclient$isHittingBlock = this.playerController.getIsHittingBlock();
          this.playerController.isHittingBlock = false;
@@ -167,6 +178,11 @@ public class MixinMinecraft {
 
    @Inject(method = "rightClickMouse", at = @At("RETURN"))
    public void rightClickMousePost(CallbackInfo ci) {
+      if (this.lemonclient$airPlaced) {
+         this.lemonclient$airPlaced = false;
+         return;
+      }
+
       if (ModuleManager.isModuleEnabled(MultiTask.class) && !this.playerController.getIsHittingBlock()) {
          this.playerController.isHittingBlock = this.lemonclient$isHittingBlock;
       }
