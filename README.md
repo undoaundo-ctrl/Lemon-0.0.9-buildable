@@ -6,6 +6,7 @@ ADDITION: Killaura!
 
 # Thanks to :
 - Cute_Lemon_owo for Lemon 0.0.9 and the original webhook code.
+- well, please dont put HIWD in this code. 
 - doihi1409 : Thanks for your Lemon 0.0.9.
 - smug2f : Lemon build framework (I got it from him from Lemon 0.0.8 buildable, thank you).
 - 220814 : rewrite 50% of the decoded code.
